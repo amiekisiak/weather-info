@@ -26,6 +26,7 @@ $.ajax({
   $('.humidity').text("Humidity: " + response.main.humidity + "%");
   $(".temperature").text("Temperature: " + response.main.temp + " F");
 
+
 });
 
 function renderButtons() {
