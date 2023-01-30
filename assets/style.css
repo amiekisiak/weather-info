@@ -4,14 +4,17 @@ body {
     line-height: 1;
   }
 
-  
-
-  
-  
- #form-heading {
+  #form-heading {
   font-size: 20px;
  }
 
  .col-lg-9{
   border-color: black;
  }
+
+ .card{
+ max-width: 10rem;
+ display: flex;
+ flex-direction: row;
+ }
+
