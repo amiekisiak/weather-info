@@ -16,8 +16,4 @@ body {
  max-width: 10rem;
  display: flex;
  flex-direction: row;
- 
  }
-.card-city{
-max-width: max-content;
-}

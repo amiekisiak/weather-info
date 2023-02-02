@@ -1,59 +1,67 @@
-var APIKey = "a8dd88d399c7287d32254917cfc9e273";
-var citiesListEl = ["London", "Paris", "New York", "Tokyo"];
-var currentDay = document.querySelector("#today-date");
-let now = moment();
-currentDay.innerHTML = now.format("DD/MM/YYYY");
+const searchForm = document.querySelector("#search-form");
+const searchInput = document.querySelector("#search-input");
+const todayDate = document.querySelector("#today-date");
+const forecast = document.querySelector("#forecast");
+const historyList = document.querySelector("#history");
 
-function showWeatherForRandomCity() {
-  var randomCity = citiesListEl[Math.floor(Math.random() * citiesListEl.length)];
-  var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + randomCity + "&appid=" + APIKey;
+const apiKey = "171039f1e0834332f8c071e671e98eac";
+const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?";
+
+// Fetch 5-day forecast for a city
+async function getForecast(city) {
+  const response = await fetch(`${apiUrl}q=${city}&appid=${apiKey}`);
+  const data = await response.json();
   
-  $.ajax({
-    url: queryURL,
-    method: "GET"
-  }).then(function(response) {
-    console.log(queryURL);
-    console.log(response);
-
-    $('.city').html("<h2>" + response.name + "</h2>");
-    $('.weather-icon').html("<img src='https://openweathermap.org/img/w/" + response.weather[0].icon + ".png' >");
-    $('.wind').text("Wind Speed: " + response.wind.speed + " MPH");
-    $('.humidity').text("Humidity: " + response.main.humidity + "%");
-    $(".temperature").text("Temperature: " + response.main.temp + " F");
-  });
-}
-
-$("#show-weather-button").click(function() {
-  showWeatherForRandomCity();
-});
-
-
-// Function for displaying city data
-function renderButtons() {
-
-  // Deleting the city buttons prior to adding new city buttons
-  // (this is necessary otherwise we will have repeat buttons)
-  $("#buttons-view").empty();
-
-  // Looping through the array of cities
-  for (var i = 0; i < citiesListEl.length; i++) {
-
-    // Then dynamically generating buttons for each city in the array.
-    // This code $("<button>") is all jQuery needs to create the start and end tag. (<button></button>)
-    var a = $("<button>");
-    // Adding a class
-    a.addClass("city");
-    // Adding a data-attribute with a value of the city at index i
-    a.attr("data-name", citiesListEl[i]);
-    // Providing the button's text with a value of the city at index i
-    a.text(citiesListEl[i]);
-    // Adding the button to the aside section
-    $("#buttons-view").append(a);
-  }
-}
-
-renderButtons();
-
-$("#show-weather-button").click(function() {
-  showWeatherForRandomCity();
-});
+  // Update today date
+  todayDate.innerHTML = `<p class="h5 mt-3">Today: ${formatDate(data.list[0].dt * 1000)}</p>`;
+  
+  // Update 5-day forecast
+  forecast.innerHTML = "";
+  for (let i = 0; i < data.list.length; i += 8) {
+    forecast.innerHTML += `
+      <div class="col-md-2 mt-3">
+        <div class="card text-center h-100">
+          <div class="card-body">
+            <p>${formatDate(data.list[i].dt * 1000)}</p>
+            <p><i class="wi wi-owm-${data.list[i].weather[0].id}"></i></p>
+            <p>${kelvinToCelsius(data.list[i].main.temp)}&#8451;</p>
+            <p>Humidity: ${data.list[i].main.humidity}%</p>
+            <p>Wind: ${data.list[i].wind.speed}m/s</p>
+          </div>
+        </div>      </div>
+        `;
+      }
+    }
+    
+    // Convert Kelvin to Celsius
+    function kelvinToCelsius(temp) {
+      return Math.round(temp - 273.15);
+    }
+    
+    // Format date
+    function formatDate(timestamp) {
+      const date = new Date(timestamp);
+      const months = [
+        "Jan", "Feb", "Mar",
+        "Apr", "May", "Jun", "Jul",
+        "Aug", "Sep", "Oct",
+        "Nov", "Dec"
+      ];
+      const month = months[date.getMonth()];
+      const day = date.getDate();
+      const year = date.getFullYear();
+      
+      return `${day} ${month} ${year}`;
+    }
+    
+    // Submit search form
+    searchForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const city = searchInput.value;
+      if (city) {
+        getForecast(city);
+        searchInput.value = "";
+      }
+    });
+    
+    
