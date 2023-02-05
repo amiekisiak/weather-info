@@ -3,65 +3,69 @@ const searchInput = document.querySelector("#search-input");
 const todayDate = document.querySelector("#today-date");
 const forecast = document.querySelector("#forecast");
 const historyList = document.querySelector("#history");
+const city = document.querySelector("#city");
+const temperature = document.querySelector("#temperature");
+const weatherIcon = document.querySelector("#weather-icon");
+const humidity = document.querySelector("#humidity");
+const wind = document.querySelector("#wind");
 
-const apiKey = "171039f1e0834332f8c071e671e98eac";
-const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?";
+const apiKey = "de28c647c4a3000a78a941c3c1b97985";
+const API_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
 
-// Fetch 5-day forecast for a city
-async function getForecast(city) {
-  const response = await fetch(`${apiUrl}q=${city}&appid=${apiKey}`);
-  const data = await response.json();
+// Event listener for search button
+searchForm.addEventListener("submit", event => {
+  event.preventDefault();
+ 
+  const cityName = searchInput.value;
+  if (cityName === "") {
+    return;
+  }
+  fetch(`${API_URL}${cityName}&appid=${apiKey}`)
+  .then(response => response.json())
+  .then(data => {
+    const weather = data.weather[0];
+    const main = data.main;
+    const windData = data.wind;
+    // Update today's date
+    todayDate.textContent = new Date().toDateString();
   
-  // Update today date
-  todayDate.innerHTML = `<p class="h5 mt-3">Today: ${formatDate(data.list[0].dt * 1000)}</p>`;
+    // Update city name
+    city.textContent = data.name;
   
-  // Update 5-day forecast
-  forecast.innerHTML = "";
-  for (let i = 0; i < data.list.length; i += 8) {
-    forecast.innerHTML += `
-      <div class="col-md-2 mt-3">
-        <div class="card text-center h-100">
-          <div class="card-body">
-            <p>${formatDate(data.list[i].dt * 1000)}</p>
-            <p><i class="wi wi-owm-${data.list[i].weather[0].id}"></i></p>
-            <p>${kelvinToCelsius(data.list[i].main.temp)}&#8451;</p>
-            <p>Humidity: ${data.list[i].main.humidity}%</p>
-            <p>Wind: ${data.list[i].wind.speed}m/s</p>
-          </div>
-        </div>      </div>
-        `;
-      }
-    }
-    
-    // Convert Kelvin to Celsius
-    function kelvinToCelsius(temp) {
-      return Math.round(temp - 273.15);
-    }
-    
-    // Format date
-    function formatDate(timestamp) {
-      const date = new Date(timestamp);
-      const months = [
-        "Jan", "Feb", "Mar",
-        "Apr", "May", "Jun", "Jul",
-        "Aug", "Sep", "Oct",
-        "Nov", "Dec"
-      ];
-      const month = months[date.getMonth()];
-      const day = date.getDate();
-      const year = date.getFullYear();
-      
-      return `${day} ${month} ${year}`;
-    }
-    
-    // Submit search form
-    searchForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const city = searchInput.value;
-      if (city) {
-        getForecast(city);
-        searchInput.value = "";
-      }
-    });
-    
-    
+    // Update temperature
+    temperature.textContent = `Temperature: ${kelvinToCelsius(main.temp)}°C`;
+  
+    // Update weather icon
+    weatherIcon.innerHTML = `<img src="http://openweathermap.org/img/wn/${
+      weather.icon
+    }@2x.png" />`;
+  
+    // Update humidity
+    humidity.textContent = `Humidity: ${main.humidity}%`;
+    // Update wind
+    wind.textContent = `Wind: ${windData.speed}m/s`;
+  });
+});
+
+// Convert Kelvin to Celsius
+function kelvinToCelsius(kelvin) {
+  return Math.round(kelvin - 273.15);
+}
+fetch(`${API_URL}${cityName}&appid=${apiKey}`)
+  .then(response => response.json())
+  .then(data => {
+    // your code here
+  })
+  .catch(error => console.error(error));
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
