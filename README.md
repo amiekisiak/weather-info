@@ -1,7 +1,7 @@
 # Module 8 Server-Side APIs: Weather Dashboard
 
 
-[![JavaScript](imagelink)](https://jquery.com/)
+[![JavaScript](https://img.shields.io/badge/javascript yellow)
 
 
 ## Your Task
