@@ -1,7 +1,11 @@
 # Module 8 Server-Side APIs: Weather Dashboard
 
 
+<<<<<<< HEAD
 ![ JavaScript ](https://img.shields.io/badge/contributors-4-blue)
+=======
+
+>>>>>>> ea2c13549c93abb2bcd3e10ce7974dccd9a13597
 
 
 ## Your Task
