@@ -6,6 +6,7 @@ const historyList = document.querySelector("#history");
 
 const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?";
 const weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
+const apiKey = "db547e69a3ae9d52dddcf598c81e7cc7";
 
 // Sets the input value in localStorage
 function recordCityData() {
@@ -55,6 +56,15 @@ forecast.innerHTML += `
     // Fetch weather forecast for the next 5 days
     fetchForecast(city);
   }
+
+
+  searchForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const city = searchInput.value;
+    fetchWeather(city);
+    recordCityData();
+  });
+  
   
   // Fetch weather forecast for the next 5 days
   async function fetchForecast(city) {
@@ -83,6 +93,14 @@ forecast.innerHTML += `
         `;
       }
     }
+
+    searchForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const city = searchInput.value;
+        fetchForecast(city);
+        recordCityData();
+      });
+      
     
     // Fetch weather for a city
     async function getWeather(city) {
@@ -115,10 +133,3 @@ function formatDate(timestamp) {
 
   return `${month} ${day}, ${year}`;
 }
-
-// Submit form
-searchForm.addEventListener("submit", e => {
-  e.preventDefault();
-  const city = searchInput.value;
-  getWeather(city);
-});
