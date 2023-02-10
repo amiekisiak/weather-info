@@ -27,7 +27,7 @@
   const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?";
   const weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
   const apiKey = "db547e69a3ae9d52dddcf598c81e7cc7";
-///////////////////////////////////////////////////////////////////////////////////
+
 searchForm.addEventListener("submit", function(event) {
   event.preventDefault();
 
@@ -52,7 +52,6 @@ searchForm.addEventListener("submit", function(event) {
     });
 });
 
-///////////////////////////////////////////////////////////////////////
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
@@ -115,3 +114,12 @@ searchForm.addEventListener("submit", (event) => {
       console.error(error);
     });
 });
+
+// Convert Kelvin to Celsius
+function kelvinToCelsius(temp) {
+  var celsius = temp - 273.15;
+  return Math.round(celsius);
+}
+
+var temperature = kelvinToCelsius(281.55);
+console.log("Temperature: " + temperature + "°C");
