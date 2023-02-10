@@ -1,135 +1,117 @@
-const searchForm = document.querySelector("#search-form");
-const searchInput = document.querySelector("#search-input");
-const todayDate = document.querySelector("#today-date");
-const forecast = document.querySelector("#forecast");
-const historyList = document.querySelector("#history");
-
-const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?";
-const weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
-const apiKey = "db547e69a3ae9d52dddcf598c81e7cc7";
-
-// Sets the input value in localStorage
-function recordCityData() {
-  localStorage.setItem('cityNameStore', inputEl.value);
-}
-// Append the search input from localStorage to the cities list
-for (var i = 0; i < localStorage.length; i++) {
-  $(".cities-list").append("<p>" + localStorage.getItem(localStorage.key(i)) + "</p>");
-}
-// Current Day Forecast function
-$.ajax ({
-  url: weatherUrl,
-  method: "GET"
-})
-  .then(function(response) {
-
-      // Add weather info to page
-      $('.city').html("<h2>" + response.name + "</h2>");
-      $('.weather-icon').html("<img src='https://openweathermap.org/img/w/" + response.weather[0].icon + ".png' >");
-      $('.wind').text("Wind Speed: " + response.wind.speed + " MPH");
-      $('.humidity').text("Humidity: " + response.main.humidity + "%");
-      $(".temperature").text("Temperature: " + response.main.temp + " F");
-    })
-
-// Fetch weather for a city
-async function fetchWeather(city) {
-  const response = await fetch(`${weatherUrl}${city}&appid=${apiKey}`);
-  const data = await response.json();
-
-  // Update today date
-  todayDate.innerHTML = `<p class="h5 mt-3">Today: ${formatDate(data.dt * 1000)}</p>`;
-// Update weather information
-forecast.innerHTML = "";
-forecast.innerHTML += `
-  <div class="col-md-12 mt-3">
-    <div class="card text-center h-100">
-      <div class="card-body">
-        <p><i class="wi wi-owm-${data.weather[0].id}"></i></p>
-        <p>${kelvinToCelsius(data.main.temp)}&#8451;</p>
-        <p>Humidity: ${data.main.humidity}%</p>
-        <p>Wind: ${data.wind.speed}m/s</p>
-      </div>
-      </div>
-      </div>
-    `;
-    
-    // Fetch weather forecast for the next 5 days
-    fetchForecast(city);
-  }
 
 
-  searchForm.addEventListener('submit', function(event) {
-    event.preventDefault();
-    const city = searchInput.value;
-    fetchWeather(city);
-    recordCityData();
-  });
-  
-  
-  // Fetch weather forecast for the next 5 days
-  async function fetchForecast(city) {
-    const response = await fetch(`${apiUrl}q=${city}&appid=${apiKey}`);
-    const data = await response.json();
-  
-    // Filter forecast for every 3 hours
-    const forecastData = data.list.filter(item => {
-      return item.dt_txt.includes("15:00:00");
-    });
-  
-    // Display the forecast for next 5 days
-    forecast.innerHTML = "";
-    for (let i = 0; i < 5; i++) {
-      forecast.innerHTML += `
-        <div class="col-md-2 mt-3">
-          <div class="card text-center h-100">
-            <div class="card-body">
-              <p>${formatDate(forecastData[i].dt * 1000)}</p>
-              <p><i class="wi wi-owm-${forecastData[i].weather[0].id}"></i></p>
-              <p>${kelvinToCelsius(forecastData[i].main.temp)}&#8451;</p>
-              <p>Humidity: ${forecastData[i].main.humidity}%</p>
-            </div>
-            </div>
-          </div>
-        `;
-      }
-    }
+// The function "recordCityData" is setting the value of the localStorage item 'cityNameStore', but the input element is referred to as "inputEl" which is not defined anywhere in the code.
 
-    searchForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const city = searchInput.value;
-        fetchForecast(city);
-        recordCityData();
-      });
-      
-    
-    // Fetch weather for a city
-    async function getWeather(city) {
-      const response = await fetch(`${weatherUrl}${city}&appid=${apiKey}`);
-      const data = await response.json();
-    
-      // Update today date
-      todayDate.innerHTML = `<p class="h5 mt-3">Today: ${formatDate(data.dt * 1000)}</p>`;
+// The for loop in the code to append the search input from local storage to the "cities-list" is using the jQuery append method, but there is no reference to the jQuery library in the code.
 
+// The "fetchForecast" function is being called twice in the code.
+
+// The function "getWeather" is not being used in the code.
+
+// To resolve these issues, you should modify the code as follows:
+
+// Replace "inputEl.value" with "searchInput.value" in the "recordCityData" function.
+
+// Remove the jQuery append method in the for loop. You can use JavaScript to append the search input to the "cities-list".
+
+// Remove the second call to the "fetchForecast" function.
+
+// Remove the "getWeather" function since it is not being used.
   // Update weather information
-  getWeather(city);
-}
-// Convert Kelvin to Celsius
-function kelvinToCelsius(temp) {
-  return Math.round(temp - 273.15);
-}
+  const searchForm = document.querySelector("#search-form");
+  const searchInput = document.querySelector("#search-input");
+  const todayDate = document.querySelector("#today-date");
+  const forecast = document.querySelector("#forecast");
+  const historyList = document.querySelector("#history");
+  
+  const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?";
+  const weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
+  const apiKey = "db547e69a3ae9d52dddcf598c81e7cc7";
+///////////////////////////////////////////////////////////////////////////////////
+searchForm.addEventListener("submit", function(event) {
+  event.preventDefault();
 
-// Format date
-function formatDate(timestamp) {
-  const date = new Date(timestamp);
-  const months = [
-    "Jan", "Feb", "Mar",
-    "Apr", "May", "Jun", "Jul",
-    "Aug", "Sep", "Oct",
-    "Nov", "Dec"
-  ];
-  const month = months[date.getMonth()];
-  const day = date.getDate();
-  const year = date.getFullYear();
+  const city = searchInput.value;
+  const weatherApiUrl = `${weatherUrl}${city}&appid=${apiKey}`;
 
-  return `${month} ${day}, ${year}`;
-}
+  fetch(weatherApiUrl)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      const today = new Date();
+      todayDate.textContent = today.toLocaleDateString();
+
+      const currentWeather = data.weather[0].main;
+      const temperature = data.main.temp;
+      forecast.textContent = `Weather: ${currentWeather} | Temperature: ${temperature}°C`;
+    })
+    .catch(function(error) {
+      console.error("Error:", error);
+      forecast.textContent = "Could not get weather information";
+    });
+});
+
+///////////////////////////////////////////////////////////////////////
+searchForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const city = searchInput.value;
+  const today = new Date();
+  todayDate.textContent = `${today.toLocaleDateString()}`;
+
+  fetch(`${weatherUrl}${city}&appid=${apiKey}`)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      const cityName = data.name;
+      const country = data.sys.country;
+      const description = data.weather[0].description;
+      const icon = data.weather[0].icon;
+      const temperature = data.main.temp;
+
+      todayDate.textContent = `${cityName}, ${country} - ${today.toLocaleDateString()}`;
+      forecast.innerHTML = `
+        <div class="card-body">
+          <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="weather icon">
+          <p class="card-text">${description}</p>
+          <p class="card-text">Temperature: ${temperature} &#8451;</p>
+        </div>
+      `;
+
+      fetch(`${apiUrl}q=${city}&appid=${apiKey}`)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          let forecastData = "";
+          for (let i = 0; i < 5; i++) {
+            const date = new Date(data.list[i].dt * 1000);
+            const description = data.list[i].weather[0].description;
+            const icon = data.list[i].weather[0].icon;
+            const temperature = data.list[i].main.temp;
+
+            forecastData += `
+              <div class="col-md-2">
+                <div class="card text-white bg-primary mb-3">
+                  <div class="card-header">${date.toLocaleDateString()}</div>
+                  <div class="card-body">
+                    <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="weather icon">
+                    <p class="card-text">${description}</p>
+                    <p class="card-text">Temperature: ${temperature} &#8451;</p>
+                  </div>
+                </div>
+              </div>
+            `;
+          }
+          forecast.innerHTML += `<div class="row">${forecastData}</div>`;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+});
