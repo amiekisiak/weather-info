@@ -1,37 +1,11 @@
+const searchForm = document.querySelector("#search-form");
+const searchInput = document.querySelector("#search-input");
+const todayDate = document.querySelector("#today-date");
+const forecast = document.querySelector("#forecast");
+const historyList = document.querySelector("#history");
 
-  const searchForm = document.querySelector("#search-form");
-  const searchInput = document.querySelector("#search-input");
-  const todayDate = document.querySelector("#today-date");
-  const forecast = document.querySelector("#forecast");
-  const historyList = document.querySelector("#history");
-  
-  const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?";
-  const weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
-  
-
-searchForm.addEventListener("submit", function(event) {
-  event.preventDefault();
-
-  const city = searchInput.value;
-  const weatherApiUrl = `${weatherUrl}${city}&appid=${apiKey}`;
-
-  fetch(weatherApiUrl)
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(data) {
-      const today = new Date();
-      todayDate.textContent = today.toLocaleDateString();
-
-      const currentWeather = data.weather[0].main;
-      const temperature = data.main.temp;
-      forecast.textContent = `Weather: ${currentWeather} | Temperature: ${temperature}°C`;
-    })
-    .catch(function(error) {
-      console.error("Error:", error);
-      forecast.textContent = "Could not get weather information";
-    });
-});
+const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?";
+const weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
 
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -49,7 +23,7 @@ searchForm.addEventListener("submit", (event) => {
       const country = data.sys.country;
       const description = data.weather[0].description;
       const icon = data.weather[0].icon;
-      const temperature = data.main.temp;
+      const temperature = kelvinToCelsius(data.main.temp);
 
       todayDate.textContent = `${cityName}, ${country} - ${today.toLocaleDateString()}`;
       forecast.innerHTML = `
@@ -70,7 +44,7 @@ searchForm.addEventListener("submit", (event) => {
             const date = new Date(data.list[i].dt * 1000);
             const description = data.list[i].weather[0].description;
             const icon = data.list[i].weather[0].icon;
-            const temperature = data.list[i].main.temp;
+            const temperature = kelvinToCelsius(data.list[i].main.temp);
 
             forecastData += `
               <div class="col-md-2">
