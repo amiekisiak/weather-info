@@ -1,23 +1,4 @@
 
-
-// The function "recordCityData" is setting the value of the localStorage item 'cityNameStore', but the input element is referred to as "inputEl" which is not defined anywhere in the code.
-
-// The for loop in the code to append the search input from local storage to the "cities-list" is using the jQuery append method, but there is no reference to the jQuery library in the code.
-
-// The "fetchForecast" function is being called twice in the code.
-
-// The function "getWeather" is not being used in the code.
-
-// To resolve these issues, you should modify the code as follows:
-
-// Replace "inputEl.value" with "searchInput.value" in the "recordCityData" function.
-
-// Remove the jQuery append method in the for loop. You can use JavaScript to append the search input to the "cities-list".
-
-// Remove the second call to the "fetchForecast" function.
-
-// Remove the "getWeather" function since it is not being used.
-  // Update weather information
   const searchForm = document.querySelector("#search-form");
   const searchInput = document.querySelector("#search-input");
   const todayDate = document.querySelector("#today-date");
@@ -26,7 +7,7 @@
   
   const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?";
   const weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
-  const apiKey = "db547e69a3ae9d52dddcf598c81e7cc7";
+  
 
 searchForm.addEventListener("submit", function(event) {
   event.preventDefault();
