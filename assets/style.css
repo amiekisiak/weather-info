@@ -12,8 +12,9 @@ body {
   border-color: black;
  }
 
- .card{
- max-width: 10rem;
- display: flex;
+ .card-body{
+display: flex;
+ 
+ 
  flex-direction: row;
  }

@@ -25,8 +25,8 @@ searchForm.addEventListener("submit", (event) => {
       const icon = data.weather[0].icon;
       const temperature = kelvinToCelsius(data.main.temp);
 
-      todayDate.textContent = `${cityName}, ${country} - ${today.toLocaleDateString()}`;
-      forecast.innerHTML = `
+      todayDate.textContent = `${cityName}, ${country} - ${today.toLocaleDateString("en-GB")}`;
+       forecast.innerHTML = `
         <div class="card-body">
           <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="weather icon">
           <p class="card-text">${description}</p>
@@ -49,7 +49,7 @@ searchForm.addEventListener("submit", (event) => {
             forecastData += `
               <div class="col-md-2">
                 <div class="card text-white bg-primary mb-3">
-                  <div class="card-header">${date.toLocaleDateString()}</div>
+                  <div class="card-header">${date.toLocaleDateString("en-GB", { day: "numeric", month: "numeric", year: "numeric" })}</div>
                   <div class="card-body">
                     <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="weather icon">
                     <p class="card-text">${description}</p>
