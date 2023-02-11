@@ -19,6 +19,7 @@ searchForm.addEventListener("submit", (event) => {
       return response.json();
     })
     .then((data) => {
+ 
       const cityName = data.name;
       const country = data.sys.country;
       const description = data.weather[0].description;
@@ -35,17 +36,18 @@ searchForm.addEventListener("submit", (event) => {
       `;
 
       fetch(`${apiUrl}q=${city}&appid=${apiKey}`)
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          let forecastData = "";
-          for (let i = 0; i < 5; i++) {
-            const date = new Date(data.list[i].dt * 1000);
-            const description = data.list[i].weather[0].description;
-            const icon = data.list[i].weather[0].icon;
-            const temperature = kelvinToCelsius(data.list[i].main.temp);
-
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      let forecastData = "";
+      let currentDate = new Date();
+      for (let i = 2; i < 7; i++) {
+        currentDate.setDate(currentDate.getDate() + 1);
+        const date = currentDate;
+        const description = data.list[i].weather[0].description;
+        const icon = data.list[i].weather[0].icon;
+        const temperature = kelvinToCelsius(data.list[i].main.temp);
             forecastData += `
               <div class="col-md-2">
                 <div class="card text-white bg-primary mb-3">
