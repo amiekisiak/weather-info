@@ -4,32 +4,66 @@ const todayDate = document.querySelector("#today-date");
 const forecast = document.querySelector("#forecast");
 const historyList = document.querySelector("#history");
 
-
-
-
 const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?";
 const weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
 
+let searchHistory = [];
 
-// Create a click event listener for each city in the history list
-historyList.addEventListener("click", (event) => {
-  if (event.target.tagName === "LI") {
-    const city = event.target.textContent;
-    getWeatherData(city);
-  }
+// Check if there is any stored data in the local storage
+if (localStorage.getItem("searchHistory")) {
+  // If there is, retrieve the data and update the `searchHistory` array
+  searchHistory = JSON.parse(localStorage.getItem("searchHistory"));
+
+  // Render the buttons for the stored cities
+  searchHistory.forEach((city) => {
+    const cityButton = document.createElement("button");
+    cityButton.classList.add("city-button", "btn", "btn-light");
+    cityButton.innerText = city;
+    cityButton.addEventListener("click", (event) => {
+      searchInput.value = city;
+      searchForm.dispatchEvent(new Event("submit"));
+    });
+    historyList.appendChild(cityButton);
+  });
+}
+
+// Create a clear button
+const clearButton = document.createElement("button");
+clearButton.classList.add("clear-button", "btn", "btn-danger");
+clearButton.innerText = "Clear";
+clearButton.addEventListener("click", (event) => {
+  searchHistory = [];
+  localStorage.removeItem("searchHistory");
+  historyList.innerHTML = "";
 });
-
-
+historyList.appendChild(clearButton);
 
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const city = searchInput.value;
+
+  // Add the city to the `searchHistory` array and store it in the local storage
+  if (!searchHistory.includes(city)) {
+    searchHistory.push(city);
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+
+    // Create a button for the city
+    const cityButton = document.createElement("button");
+    cityButton.classList.add("city-button", "btn", "btn-light");
+    cityButton.innerText = city;
+    cityButton.addEventListener("click", (event) => {
+      searchInput.value = city;
+      searchForm.dispatchEvent(new Event("submit"));
+    });
+    historyList.appendChild(cityButton);
+  }
+
   const today = new Date();
 
-  
 
-  fetch(`${weatherUrl}${city}&appid=${apiKey}`)
+//get current weather for the city of choice
+fetch(`${weatherUrl}${city}&appid=${apiKey}`)
     .then((response) => {
       return response.json();
     })
@@ -43,9 +77,8 @@ searchForm.addEventListener("submit", (event) => {
       const humidity = data.main.humidity;
       const windSpeed = data.wind.speed;
    
-      
        forecast.innerHTML = `
-
+        
        <div class="weather-col-md-4">
        <div class="card text-black mb-2">
         <div class="card-header">
@@ -56,21 +89,17 @@ searchForm.addEventListener("submit", (event) => {
   <div>
       <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="weather icon">
       <p class="card-text">${description}</p>
-      <p class="card-text">Temperature: ${temperature} &#8451;</p>
+      <p class="card-text">Temp: ${temperature} &#8451;</p>
       <p class="card-text">Humidity: ${humidity}%</p>
       <p class="card-text">Wind Speed: ${windSpeed} m/s</p>
     </div>
   </div>
   </div>
+  
 `;
 
- //display 5-day weather forecast header     
-var header = document.createElement("div");
-header.classList.add("h2");
-header.innerHTML = "5-day Forecast";
-document.createElement("div");
-    
-      fetch(`${apiUrl}q=${city}&appid=${apiKey}`)
+//get forecast for the next 5 days
+     fetch(`${apiUrl}q=${city}&appid=${apiKey}`)
      .then((response) => {
       return response.json();
     })
@@ -85,14 +114,17 @@ document.createElement("div");
         const temperature = kelvinToCelsius(data.list[i].main.temp);
         const humidity = data.list[i].main.humidity;
         const windSpeed = data.list[i].wind.speed;
+      
         forecastData += `
+
+            
             <div class="col-md-2 m-2">
           <div class="card text-black mb-2">
          <div class="card-header">${date.toLocaleDateString("en-GB", { day: "numeric", month: "numeric", year: "numeric" })}</div>
                   <div class="card-body">
                     <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="weather icon">
                     <p class="card-text">${description}</p>
-                    <p class="card-text">Temperature: ${temperature} &#8451;</p>
+                    <p class="card-text">Temp: ${temperature} &#8451;</p>
                     <p class="card-text">Humidity: ${humidity}%</p>
                     <p class="card-text">Wind Speed: ${windSpeed} m/s</p>
                   </div>
@@ -111,11 +143,6 @@ document.createElement("div");
     });
 });
 
-
-
-
-
-
 // Convert Kelvin to Celsius
 function kelvinToCelsius(temp) {
   var celsius = temp - 273.15;
@@ -124,4 +151,5 @@ function kelvinToCelsius(temp) {
 
 var temperature = kelvinToCelsius(281.55);
 console.log("Temperature: " + temperature + "°C");
+
 
