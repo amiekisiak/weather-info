@@ -3,12 +3,14 @@
 .weather-col-md-4{
 width: 78%;
 padding-bottom: 2%;
+background-color:rgb(163, 163, 203);
 
 }
 
 .card-weather{
 width: 85%;
 background-color: rgb(163, 163, 203);
+padding: 20%;
 
 }
 

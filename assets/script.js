@@ -102,15 +102,17 @@ fetch(`${weatherUrl}${city}&appid=${apiKey}`)
      fetch(`${apiUrl}q=${city}&appid=${apiKey}`)
      .then((response) => {
       return response.json();
-    })
+      })
     .then((data) => {
       let forecastData = "";
       let currentDate = new Date();
+    
+
       for (let i = 2; i < 7; i++) {
         currentDate.setDate(currentDate.getDate() + 1);
         const date = currentDate;
         const description = data.list[i].weather[0].description;
-        const icon = data.list[i].weather[0].icon;
+       
         const temperature = kelvinToCelsius(data.list[i].main.temp);
         const humidity = data.list[i].main.humidity;
         const windSpeed = data.list[i].wind.speed;
