@@ -87,7 +87,7 @@ fetch(`${weatherUrl}${city}&appid=${apiKey}`)
   <div class="card-weather text-black col mx-1">
   
   <div>
-      <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="weather icon">
+      <img src="https://openweathermap.org/img/wn/10d@2x.png"alt="weather icon" alt="weather icon">
       <p class="card-text">${description}</p>
       <p class="card-text">Temp: ${temperature} &#8451;</p>
       <p class="card-text">Humidity: ${humidity}%</p>
@@ -116,13 +116,12 @@ fetch(`${weatherUrl}${city}&appid=${apiKey}`)
         const windSpeed = data.list[i].wind.speed;
       
         forecastData += `
-
             
             <div class="col-md-2 m-2">
           <div class="card text-black mb-2">
          <div class="card-header">${date.toLocaleDateString("en-GB", { day: "numeric", month: "numeric", year: "numeric" })}</div>
                   <div class="card-body">
-                    <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="weather icon">
+                    <img src="https://openweathermap.org/img/wn/10d@2x.png"alt="weather icon" alt="weather icon">
                     <p class="card-text">${description}</p>
                     <p class="card-text">Temp: ${temperature} &#8451;</p>
                     <p class="card-text">Humidity: ${humidity}%</p>
@@ -151,5 +150,3 @@ function kelvinToCelsius(temp) {
 
 var temperature = kelvinToCelsius(281.55);
 console.log("Temperature: " + temperature + "°C");
-
-
