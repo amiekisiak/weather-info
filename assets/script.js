@@ -7,6 +7,7 @@ const historyList = document.querySelector("#history");
 const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?";
 const weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
 
+
 let searchHistory = [];
 
 // Check if there is any stored data in the local storage
