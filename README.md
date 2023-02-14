@@ -48,6 +48,9 @@ When a user views the current weather conditions for that city they are presente
 
 ## Screenshot:
 
+![screencapture-amiekisiak-github-io-weather-info-2023-02-14-11_47_02](https://user-images.githubusercontent.com/117371691/218729428-713ebb9a-4451-4e59-ae0c-4968e474f492.png)
+
+
 ## License:
 
 Licensed under GPL-3.0 license.
