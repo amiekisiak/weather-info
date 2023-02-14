@@ -62,13 +62,13 @@ searchForm.addEventListener("submit", (event) => {
   const today = new Date();
 
 
-//get current weather for the city of choice
-fetch(`${weatherUrl}${city}&appid=${apiKey}`)
+  //get current weather for the city of choice
+  fetch(`${weatherUrl}${city}&appid=${apiKey}`)
     .then((response) => {
       return response.json();
     })
     .then((data) => {
- 
+
       const cityName = data.name;
       const country = data.sys.country;
       const description = data.weather[0].description;
@@ -76,17 +76,16 @@ fetch(`${weatherUrl}${city}&appid=${apiKey}`)
       const temperature = kelvinToCelsius(data.main.temp);
       const humidity = data.main.humidity;
       const windSpeed = data.wind.speed;
-   
-       forecast.innerHTML = `
+
+      forecast.innerHTML = `
+        
         
        <div class="weather-col-md-4">
        <div class="card text-black mb-2">
-        <div class="card-header">
-    <h5>${cityName}, ${country} - ${today.toLocaleDateString("en-GB")}</h5></div>
- 
-  <div class="card-weather text-black col mx-1">
-  
-  <div>
+       <div class="card-header">
+       <h5>${cityName}, ${country} - ${today.toLocaleDateString("en-GB")}</h5></div>
+       <div class="card-weather col">
+       <div>
       <img src="https://openweathermap.org/img/wn/10d@2x.png"alt="weather icon" alt="weather icon">
       <p class="card-text">${description}</p>
       <p class="card-text">Temp: ${temperature} &#8451;</p>
@@ -95,32 +94,33 @@ fetch(`${weatherUrl}${city}&appid=${apiKey}`)
     </div>
   </div>
   </div>
-  
+  </div>
+ 
 `;
 
-//get forecast for the next 5 days
-     fetch(`${apiUrl}q=${city}&appid=${apiKey}`)
-     .then((response) => {
-      return response.json();
-      })
-    .then((data) => {
-      let forecastData = "";
-      let currentDate = new Date();
-    
+      //get forecast for the next 5 days
+      fetch(`${apiUrl}q=${city}&appid=${apiKey}`)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          let forecastData = "";
+          let currentDate = new Date();
 
-      for (let i = 2; i < 7; i++) {
-        currentDate.setDate(currentDate.getDate() + 1);
-        const date = currentDate;
-        const description = data.list[i].weather[0].description;
-       
-        const temperature = kelvinToCelsius(data.list[i].main.temp);
-        const humidity = data.list[i].main.humidity;
-        const windSpeed = data.list[i].wind.speed;
-      
-        forecastData += `
+
+          for (let i = 2; i < 7; i++) {
+            currentDate.setDate(currentDate.getDate() + 1);
+            const date = currentDate;
+            const description = data.list[i].weather[0].description;
+
+            const temperature = kelvinToCelsius(data.list[i].main.temp);
+            const humidity = data.list[i].main.humidity;
+            const windSpeed = data.list[i].wind.speed;
+
+            forecastData += `
             
-            <div class="col-md-2 m-2">
-          <div class="card text-black mb-2">
+        <div class="col-md-2 m-2">
+        <div class="card mb-2">
          <div class="card-header">${date.toLocaleDateString("en-GB", { day: "numeric", month: "numeric", year: "numeric" })}</div>
                   <div class="card-body">
                     <img src="https://openweathermap.org/img/wn/10d@2x.png"alt="weather icon" alt="weather icon">
@@ -131,6 +131,7 @@ fetch(`${weatherUrl}${city}&appid=${apiKey}`)
                   </div>
                 </div>
               </div>
+             
             `;
           }
           forecast.innerHTML += `<div class="row">${forecastData}</div>`;
