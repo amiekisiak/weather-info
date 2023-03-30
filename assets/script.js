@@ -4,10 +4,12 @@ const todayDate = document.querySelector("#today-date");
 const forecast = document.querySelector("#forecast");
 const historyList = document.querySelector("#history");
 
-const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?";
-const weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
 
-const apiKey = "db547e69a3ae9d52dddcf598c81e7cc7";
+const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?appid=${apiKey}`;
+const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+
+
+
 
 let searchHistory = [];
 
