@@ -3,9 +3,12 @@ const searchInput = document.querySelector("#search-input");
 const todayDate = document.querySelector("#today-date");
 const forecast = document.querySelector("#forecast");
 const historyList = document.querySelector("#history");
+apiKey = "db547e69a3ae9d52dddcf598c81e7cc7";
+
 
 const apiUrl = "https://api.openweathermap.org/data/2.5/forecast?";
 const weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
+
 
 
 
